@@ -36,16 +36,7 @@ function RenderDish({ dish }) {
 }
 
 function RenderComments({ comments, addComment, dishId }) {
-
-  const handleSubmit = (values) => {
-    console.log("Current State is: " + JSON.stringify(values));
-    alert("Current State is: " + JSON.stringify(values));
-    toggleModal();
-  };
-  const required = (val) => val && val.length;
-  const maxLength = (len) => (val) => !val || val.length <= len;
-  const minLength = (len) => (val) => val && val.length >= len;
-
+  
   return (
     <div className="container" style={{ padding: 0 + "em" }}>
       <Card>
@@ -68,13 +59,29 @@ function RenderComments({ comments, addComment, dishId }) {
               </div>
             );
           })}
-                  </CardBody>
+          <CommentForm dishId={dishId} addComment={addComment}/>
+        </CardBody>
       </Card>
     </div>)};
 
-class CommentForm extends Component{
-  constructor()
+function CommentForm (props){
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  }
+  const handleSubmit = (values) => {
+       toggleModal();
+       console.log(values.rating)
+       console.log(values.author)
+       console.log(values.comment)
+       props.addComment(props.dishId, values.rating, values.author, values.comment);
+  };
+  const required = (val) => val && val.length;
+  const maxLength = (len) => (val) => !val || val.length <= len;
+  const minLength = (len) => (val) => val && val.length >= len;
 
+  return (
+    <Form>
           {/*button*/}
           <Row className="form-group">
             <Button
@@ -105,7 +112,6 @@ class CommentForm extends Component{
                     Your Name
                   </Label>
                     <Control.text
-                      // type="text"
                       model=".yourname"
                       id="yourname"
                       name="yourname"
@@ -146,6 +152,7 @@ class CommentForm extends Component{
             </ModalBody>
           </Modal>
 
+        </Form>
   );
 }
 const DishDetail = (props) => {
