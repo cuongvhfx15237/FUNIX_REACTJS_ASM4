@@ -35,22 +35,13 @@ function RenderDish({ dish }) {
   );
 }
 
-function RenderComments({ comments }) {
-  const [isModalOpen, setisModalOpen] = useState(false);
-  const toggleModal = () => {
-    setisModalOpen(!isModalOpen);
-  };
+function RenderComments({ comments, addComment, dishId }) {
+
   const handleSubmit = (values) => {
     console.log("Current State is: " + JSON.stringify(values));
     alert("Current State is: " + JSON.stringify(values));
     toggleModal();
   };
-  // const initialNameState = {};
-  // const store = createStore(combineReducers({
-  //   deep: combineForms({
-  //     yourname: initialNameState,
-  //   }, 'deep'),
-  // }));
   const required = (val) => val && val.length;
   const maxLength = (len) => (val) => !val || val.length <= len;
   const minLength = (len) => (val) => val && val.length >= len;
@@ -77,6 +68,12 @@ function RenderComments({ comments }) {
               </div>
             );
           })}
+                  </CardBody>
+      </Card>
+    </div>)};
+
+class CommentForm extends Component{
+  constructor()
 
           {/*button*/}
           <Row className="form-group">
@@ -148,9 +145,7 @@ function RenderComments({ comments }) {
               </LocalForm>
             </ModalBody>
           </Modal>
-        </CardBody>
-      </Card>
-    </div>
+
   );
 }
 const DishDetail = (props) => {
@@ -174,7 +169,9 @@ const DishDetail = (props) => {
             <RenderDish dish={props.dish} />
           </div>
           <div className="col-12 col-md-5 m-1">
-            <RenderComments comments={props.comments} />
+            <RenderComments comments={props.comments}
+            addComment={props.addComment}
+            dishId={props.dish.id} />
           </div>
         </div>
       </div>
