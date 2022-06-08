@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Breadcrumb, BreadcrumbItem,
     Button, Row, Col, Label } from 'reactstrap';
-import { Control, LocalForm, Errors } from 'react-redux-form';
+import { Control, Form, Errors, actions } from 'react-redux-form';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -13,10 +13,11 @@ const isNumber = (val) => !isNaN(Number(val));
 const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
 
-function Contact () {
+function Contact (props) {
     const  handleSubmit=(values)=>{
         console.log("Current State is: " + JSON.stringify(values))
         alert ("Current State is: " + JSON.stringify(values))
+        props.resetFeedbackForm();
     }
 
     return(
@@ -62,7 +63,7 @@ function Contact () {
                     <h3>Send us your feedback</h3>
                 </div>
                 <div className='col-12 col-md-9'>
-                <LocalForm onSubmit={(values) => handleSubmit(values)}>
+                <Form model="feedback" onSubmit={(values) => handleSubmit(values)}>
                             <Row className="form-group">
                                 <Label htmlFor="firstname" md={2}>First Name</Label>
                                 <Col md={10}>
@@ -184,7 +185,7 @@ function Contact () {
                                     </Button>
                                 </Col>
                             </Row>
-                        </LocalForm>
+                        </Form>
                 </div>
             </div>
         </div>
