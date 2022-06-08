@@ -3,7 +3,7 @@ export const addComment = (dishId, rating, author, comment ) => ({
     type: ActionTypes.ADD_COMMENT,
     payload: {
         dishId: dishId,
-        raiting: rating,
+        rating: rating,
         author: author,
         comment: comment
     }

@@ -11,15 +11,11 @@ import {
   Label,
   Form,
   ModalBody,
-  FormGroup,
   Modal,
-  Input,
   ModalHeader,
-  Col,
   Row,
 } from "reactstrap";
-import { Control, Errors, combineForms, LocalForm } from "react-redux-form";
-import { legacy_createStore as createStore, combineReducers } from "redux";
+import { Control, Errors, LocalForm } from "react-redux-form";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -47,6 +43,7 @@ function RenderComments({ comments, addComment, dishId }) {
               <div key={comment.id}>
                 <CardText>{comment.comment}</CardText>
                 <CardText>
+                  <span>--</span>
                   {comment.author},
                   {new Intl.DateTimeFormat("en-US", {
                     year: "numeric",
@@ -76,9 +73,9 @@ function CommentForm (props){
        console.log(values.comment)
        props.addComment(props.dishId, values.rating, values.author, values.comment);
   };
-  const required = (val) => val && val.length;
-  const maxLength = (len) => (val) => !val || val.length <= len;
-  const minLength = (len) => (val) => val && val.length >= len;
+  const required = (values) => values && values.length;
+  const maxLength = (len) => (values) => !values || values.length <= len;
+  const minLength = (len) => (values) => values && values.length >= len;
 
   return (
     <Form>
@@ -99,22 +96,26 @@ function CommentForm (props){
               <LocalForm onSubmit={(values) => handleSubmit(values)}>
                 <Row className="form-group">
                   <Label htmlFor="Ratting">Ratting</Label>
-                  <Input type="select" id="Ratting" name="Ratting">
+                  <Control.select 
+                  model=".ratting"
+                  type="select" 
+                  id="Ratting" 
+                  name="Ratting">
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
                     <option value="5">5</option>
-                  </Input>
+                  </Control.select>
                 </Row>
                 <Row className="form-group">
-                  <Label htmlFor="yourname">
+                  <Label htmlFor="author">
                     Your Name
                   </Label>
-                    <Control.text
-                      model=".yourname"
-                      id="yourname"
-                      name="yourname"
+                    <Control.input
+                      model=".author"
+                      id="author"
+                      name="author"
                       placeholder="First Name"
                       className="form-control"
                       validators={{
@@ -125,7 +126,7 @@ function CommentForm (props){
                     />
                     <Errors
                       className="text-danger"
-                      model=".yourname"
+                      model=".author"
                       show="touched"
                       messages={{
                         required: "required",
@@ -136,7 +137,8 @@ function CommentForm (props){
                 </Row>
                 <Row className="form-group">
                   <Label htmlFor="Comments">Comments</Label>
-                  <Input
+                  <Control.textarea
+                    model=".comment"
                     type="textarea"
                     id="comment"
                     className="comment"
