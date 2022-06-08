@@ -174,7 +174,7 @@ const DishDetail = (props) => {
       </div>
     )
   }
-  if (props.dish != null) {
+  else if (props.dish != null) {
     return (
       <div className="container">
         <div className="row">

@@ -4,7 +4,7 @@ import { Card, CardImg, CardImgOverlay,
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Loading} from './LoadingComponent';
-    function RenderMenuItem ({dish, onClick}) {
+    function RenderMenuItem ({dish}) {
         return (
             <Card>
                 <Link to={`${dish.id}`} >
@@ -25,7 +25,6 @@ const Menu = (props) => {
       return (
           <div className="col-12 col-md-5 m-1"  key={dish.id}>
               <RenderMenuItem dish={dish}
-            //    onClick={props.onClick}
                 />
           </div>
       );
@@ -48,7 +47,7 @@ const Menu = (props) => {
       </div>
     )
   }
-  else
+  else {
         return (
             <div className="container">
                 <div className="row">
@@ -67,5 +66,5 @@ const Menu = (props) => {
             </div>
         );
 }
-
+}
 export default Menu;
