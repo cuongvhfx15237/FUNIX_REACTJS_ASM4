@@ -6,7 +6,6 @@ import { Card, CardImg, CardText, CardBody,
     import {baseUrl} from '../shared/baseUrl';
 
 function RenderCard({ item , isLoading, errMess}) {
-    debugger
     if (isLoading) {
         return (<Loading />)
     }

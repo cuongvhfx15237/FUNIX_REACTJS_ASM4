@@ -51,7 +51,7 @@ export const addComments = (comments) => ({
 
 export const fetchPromos = () => (dispatch) => {
 
-    dispatch(promosLoading(true));
+    dispatch(promosLoading());
 
     return fetch( baseUrl + 'promotions' )
     .then(response => response.json())
