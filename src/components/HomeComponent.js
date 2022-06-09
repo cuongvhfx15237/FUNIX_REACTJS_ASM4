@@ -5,7 +5,8 @@ import { Card, CardImg, CardText, CardBody,
     import {Loading} from './LoadingComponent';
     import {baseUrl} from '../shared/baseUrl';
 
-function RenderCard({ item, isLoading, errMess}) {
+function RenderCard({ item , isLoading, errMess}) {
+    debugger
     if (isLoading) {
         return (<Loading />)
     }
@@ -32,7 +33,7 @@ function Home(props) {
             <div className="row align-items-start">
                 <div className="col-12 col-md m-1">
                     <RenderCard 
-                    item={props.dish} 
+                    item ={props.dish} 
                     isLoading={props.dishesLoading}
                     errMess={props.dishesErrMess}
                     />
