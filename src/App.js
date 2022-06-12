@@ -6,12 +6,9 @@ import { Provider } from 'react-redux';
 import { ConfigureStore} from './redux/configureStore'
 
 const store= ConfigureStore();
-class App extends Component {
+debugger
+function App () {
 
-  constructor(props) {
-    super(props)
-  }
-  render() {
     return (
       <Provider store = {store}>
         <BrowserRouter>
@@ -22,7 +19,7 @@ class App extends Component {
       </Provider>
     );
   }
-}
+
 
 export default App;
   

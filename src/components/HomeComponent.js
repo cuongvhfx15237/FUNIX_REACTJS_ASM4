@@ -27,6 +27,7 @@ function RenderCard({ item , isLoading, errMess}) {
 }
 
 function Home(props) {
+    debugger
     return(
         <div className="container">
             <div className="row align-items-start">

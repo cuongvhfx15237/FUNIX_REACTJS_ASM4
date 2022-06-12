@@ -43,7 +43,7 @@ export const postComment = (dishId, rating, author, comment) => (dispatch) => {
         
 }
 export const fetchDishes = () => (dispatch) => {
-
+    debugger
     dispatch(dishesLoading(true));
 
     return fetch( baseUrl + 'dishes' )
@@ -80,7 +80,7 @@ export const addDishes = (dishes) => ({
     payload: dishes
 });
 export const fetchComments = () => (dispatch) => {
-
+ debugger
     return fetch( baseUrl + 'comments' )
     .then(response => {
         if (response.ok) {
@@ -111,6 +111,7 @@ export const addComments = (comments) => ({
 });
 
 export const fetchPromos = () => (dispatch) => {
+    debugger
 
     dispatch(promosLoading());
 
