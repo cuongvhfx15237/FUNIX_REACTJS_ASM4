@@ -168,6 +168,7 @@ function CommentForm (props){
   );
 }
 const DishDetail = (props) => {
+  debugger
   if (props.isLoading) {
       return(
         <div className="container">

@@ -125,26 +125,26 @@ function Main(props) {
         promosErrMess={props.promotions.errMess}
         leader={props.leaders.filter((leader) => leader.featured)[0]}
       />
-      // <div>aaaa</div>
     );
 
   };
-  const DishWithId = (props) => {
+  const DishWithId = () => {
     const id = useParams();
+    debugger
     return (
       <DishDetail
         dish={
-          vals.dishes.dishes.filter(
+          props.dishes.dishes.filter(
             (dish) => dish.id === parseInt(id.dishId, 10)
           )[0]
         }
-        isLoading={vals.dishes.isLoading}
-        errMess={vals.dishes.errMess}
-        comments={vals.comments.comments.filter(
+        isLoading={props.dishes.isLoading}
+        errMess={props.dishes.errMess}
+        comments={props.comments.comments.filter(
           (comment) => comment.dishId === parseInt(id.dishId, 10)
         )}
-        commentsErrMess={vals.comments.errMess}
-        postComment={vals.postComment}
+        commentsErrMess={props.comments.errMess}
+        postComment={props.postComment}
       />
     );
   };
@@ -157,7 +157,7 @@ function Main(props) {
           <Routes>
             <Route path="home" element={<HomePage />} />
             <Route path='menu' element={<Menu dishes={props.dishes} />}/>
-            <Route path="menu/:dishId" element={<DishWithId />} />
+            <Route path="menu/:dishId" element={<DishWithId props={props}/>} />
             <Route path='aboutus' element={ <About leaders={props.leaders}/> }/>
             <Route path='contactus' element={<Contact resetFeedbackForm={props.resetFeedbackForm}/>}/>
             <Route path="/*" element={<Navigate to="/home" />} />
