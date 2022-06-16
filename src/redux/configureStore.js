@@ -1,4 +1,4 @@
-import { createStore, combineReducers, applyMiddleware} from 'redux';
+import { combineReducers, applyMiddleware} from 'redux';
 import { Staffs } from './Staffs';
 import { Departments} from './Departments';
 import thunk from 'redux-thunk';

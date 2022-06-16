@@ -1,5 +1,4 @@
 import * as ActionTypes from './ActionTypes';
-// import {Staffs} from '../';
 import {baseUrl } from '../shared/baseUrl';
 
 
@@ -44,24 +43,24 @@ export const fetchStaffs = () => (dispatch) =>{
   
     .then(response => response.json())
     .then(staffs => dispatch(doAddStaff(staffs)))
-    .catch(error => dispatch(staffsFailed(error.message)))
+    .catch(error => dispatch(fetchStaffsFail(error.message)))
 
 }
 export const fetchStaffsFail = () => (errmess) =>({
-   type: ActionsTypes.FETCH_STAFF_FAIL,
+   type: ActionTypes.FETCH_STAFFS_FAIL,
    payload: errmess
 })
 
 export const fetchStaffsSuccess = () => (staffs) =>({
-    type: ActionsTypes.FETCH_STAFF_SUCCESS,
+    type: ActionTypes.FETCH_STAFFS_SUCCESS,
     payload: staffs
  })
  export const staffsLoading = () => ({
-    type: ActionsTypes.STAFFS_LOADING,
+    type: ActionTypes.STAFFS_LOADING,
  })
 
  //DELETE
-export const deleteStaffSuccess = () => (dispatch) ({
+export const deleteStaffSuccess = () => (id) => ({
     type: ActionTypes.DELETE_STAFF_SUCCESS,
     payload: id
 });
@@ -70,10 +69,68 @@ export const deleteStaffLoading = ( ) => ({
 })
 
 export const deleteStaff = (id) => (dispatch) =>{
-    if (confirm(" Are you sure to delete this staffs")){
+    if (window.confirm(" Are you sure to delete this staffs")){
         return fetch(baseUrl + 'staffs/{id}', {
             method: 'DELETE'
         })
         .then(()=> dispatch(deleteStaffSuccess(id)));
     } else return;
+}
+//StaffSalary
+export const staffSalarySuccess = () => (id) => ({
+    type: ActionTypes.STAFFSALARY_SUCCESS,
+    payload:id
+})
+export const staffSalaryLoading = () =>({
+    type: ActionTypes.STAFFSALARY_LOADING,
+})
+export const staffSalaryFail =() => (errmess) => ({
+    type: ActionTypes.STAFFSALARY_FAIL,
+    payload:errmess
+})
+export const staffSalary = () => (dispatch) => {
+    dispatch(staffsLoading(true));
+    return fetch ( baseUrl + 'staffs')
+    .then (response => response.json())
+    .then(staffs => dispatch (doAddStaff(staffs))) //focus in here? why use doAddStaff
+    .catch(error => dispatch(staffSalaryFail(error.message)))
+}
+
+//updateStaff
+export const updateStaffSucces = () => (id) =>({
+    type: ActionTypes.UPDATE_STAFF_SUCCESS,
+    payload:id
+})
+export const updateStaffFail = () => (errmess) => ({
+    type: ActionTypes.UPDATE_STAFF_FAIL,
+    payload: errmess
+})
+export const updateStaff = (id) => (dispatch) => {
+    return fetch(baseUrl + 'staffs', {
+        method:'PATCH',
+        body: JSON.stringify(id),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin'
+    })
+    .then( response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error' + response.status + ':' + response.statusText)
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    }
+    )
+    .then (response => response.json())
+    .then(response => dispatch(updateStaff(response)))
+    .catch(error => { console.log (' update Staff', error.message)
+            alert('Your infomation your send could not \n Error:' + error.message)})
 }
