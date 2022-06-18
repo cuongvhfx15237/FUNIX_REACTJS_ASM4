@@ -17,6 +17,25 @@ import { Link } from "react-router-dom";
 import { Button, Modal } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+const required = (val) => (val && val.length > 0);
+const maxLength = (len) => (val) => !(val) || (val.length <= len);
+const minLength = (len) => (val) => (val && (val.length >= len)) || !(val)
+const isNumber = (val) => !isNaN(Number(val)) || !(val);
+
+// function department (value) {
+//   switch(value){
+//     case "Sale":
+//       return "Dep01";
+//     case "Sale":
+//       return "Dep01";
+//     case "Sale":
+//       return "Dep01";
+//     case "Sale":
+//       return "Dep01";
+//     case "Sale":
+//       return "Dep01";
+//   }
+// }
 function StaffList(props, iStaffs) {
   const [modalAdd, setModalAdd] = useState(false)
   const [itemStaff, setItemStaff] = useState({
@@ -134,6 +153,7 @@ function StaffList(props, iStaffs) {
         <Link to={`${Staff.id}`}>
           <CardImg src={Staff.image} alt={Staff.image} />
           <CardTitle style={{ textAlign: "center" }}>{Staff.name}</CardTitle>
+          <Button color='danger'>Delete</Button>
         </Link>
       </Card>
     );

@@ -1,19 +1,17 @@
-import { combineReducers, applyMiddleware} from 'redux';
+import { combineReducers, applyMiddleware, createStore} from 'redux';
 import { Staffs } from './Staffs';
 import { Departments} from './Departments';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
-import {createForms} from 'react-redux-form';
-import {InitialInfo} from './forms';
+import { StaffSalary } from './staffSalary';
+
 
 export const ConfigureStore = () => {
-    const store = (
+    const store = createStore(
         combineReducers({
             staffs : Staffs,
             department : Departments,
-            ...createForms({
-                info: InitialInfo
-            })
+            staffSalary: StaffSalary
         }),
     applyMiddleware(thunk, logger))
 return store;
