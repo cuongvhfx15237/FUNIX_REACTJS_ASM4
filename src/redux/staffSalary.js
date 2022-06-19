@@ -1,6 +1,6 @@
 import * as ActionTypes from "./ActionTypes";
 
-export const StaffSalary = (state= {salaryLoading: true , staffsSalary: []}, action) => {
+export const StaffsSalary = (state= {salaryLoading: true , staffsSalary: []}, action) => {
    switch(action.type){
       case ActionTypes.STAFFSALARY_LOADING:
          return {...state , salaryLoading: true, staffsSalary: []};
@@ -11,4 +11,4 @@ export const StaffSalary = (state= {salaryLoading: true , staffsSalary: []}, act
       default: 
          return state;
    }
-};
+}; 

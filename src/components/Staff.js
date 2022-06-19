@@ -1,13 +1,13 @@
 import React from "react";
-import { CardImg, CardText, CardBody } from "reactstrap";
+import { CardImg, CardText, CardBody, Breadcrumb, BreadcrumbItem, Button } from "reactstrap";
 import dateFormat from "dateformat";
 import '../index.css'
-import { Breadcrumb, BreadcrumbItem } from "reactstrap";
 import { Link } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 function RenderStaff(props) {
+  debugger
   return (
     <div className="container-fluid">
       <div className="row">
@@ -33,6 +33,7 @@ function RenderStaff(props) {
             <CardText>Hệ số lương: {props.Staff[0].salaryScale} </CardText>
             <CardText>Số ngày nghỉ còn lại: {props.Staff[0].annualLeave}</CardText>
             <CardText>Số ngày đã làm thêm: {props.Staff[0].overTime}</CardText>
+            <Button color='primary'>Update</Button>
         </CardBody>
       </div>
     </div>

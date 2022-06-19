@@ -1,12 +1,7 @@
 import React, {useState} from "react";
-import { Card } from "reactstrap";
+import { Card, CardTitle } from "reactstrap";
 import { Breadcrumb, BreadcrumbItem } from "reactstrap";
 import { Link } from "react-router-dom";
-// import SearchBar from "./SearchComponent";
-
-
-
-
 
 //add comman to Money
 function formatMoney(n) {
@@ -14,6 +9,7 @@ function formatMoney(n) {
 }
 
   function Salary(props, iStaffs){
+    debugger
       // getvalue search Name
     const [searchName, setSearchName] = useState('');
     const mySearch = () => {
@@ -22,9 +18,11 @@ function formatMoney(n) {
   
     }
     if (searchName === ''){
+    debugger
      iStaffs = props.Staffs;
     }
     else {
+      debugger
      iStaffs=props.Staffs.filter((iStaff)=> iStaff.name===searchName)}
 
       //Sort 
@@ -66,7 +64,7 @@ function formatMoney(n) {
 
 
   //body
-       const staf = iStaffs.map((Staff) => {
+       const staf = iStaffs.staffs.map((Staff) => {
          const salaryTotal = formatMoney(parseInt(Staff.salaryScale)*3000000+parseInt(Staff.overTime)*200000);
          Staff = Object.assign(Staff, {salaryTotal:salaryTotal});
       return (
@@ -106,7 +104,7 @@ function formatMoney(n) {
           </BreadcrumbItem>
           <BreadcrumbItem active> Bảng Lương</BreadcrumbItem>
         </Breadcrumb>
-  
+
           <div className="input-group" style={{width: 50 + '%'}}>
                 <input id="SearchName" 
                         type="text" 
@@ -123,7 +121,9 @@ function formatMoney(n) {
       </div>
       <hr/>
           <div className="row" >
-              <div  className="input-group" style={{width: 100 + '%'}}>
+              <div style={{width: 50 + "%"}}></div>
+              <div  className="input-group" style={{width: 50 + '%', alignItems:'flex-end'}}>
+
                 <select id='SortHandle' className="form-select"  style={{margin: '0px', width: '80%'}} >
                     <option value="IdUp">Id Up</option>
                     <option value="IdDown">Id Down</option>

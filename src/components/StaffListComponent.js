@@ -16,26 +16,9 @@ import "../index.css";
 import { Link } from "react-router-dom";
 import { Button, Modal } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { FadeTransform } from 'react-animation-components';
 
-const required = (val) => (val && val.length > 0);
-const maxLength = (len) => (val) => !(val) || (val.length <= len);
-const minLength = (len) => (val) => (val && (val.length >= len)) || !(val)
-const isNumber = (val) => !isNaN(Number(val)) || !(val);
 
-// function department (value) {
-//   switch(value){
-//     case "Sale":
-//       return "Dep01";
-//     case "Sale":
-//       return "Dep01";
-//     case "Sale":
-//       return "Dep01";
-//     case "Sale":
-//       return "Dep01";
-//     case "Sale":
-//       return "Dep01";
-//   }
-// }
 function StaffList(props, iStaffs) {
   const [modalAdd, setModalAdd] = useState(false)
   const [itemStaff, setItemStaff] = useState({
@@ -102,6 +85,8 @@ function StaffList(props, iStaffs) {
       [name]: value,
     });
   }
+
+  //handle submit add staff info
   const handleSubmit = (event) =>{
     event.preventDefault();
     const newStaff = {
@@ -117,7 +102,7 @@ function StaffList(props, iStaffs) {
       props.onAdd(newStaff)
   }
   
-
+//validate input context
  function validate(){
     const errors = {
       name:"",
@@ -149,13 +134,22 @@ function StaffList(props, iStaffs) {
   function RenderStaffList({ Staff }) {
     //render  list staff with image and name;
     return (
+      <div key={Staff.id}>
+      <FadeTransform
+         in
+         transformProps={{
+            exitTransform: 'scale(0.5) translateY(-50%)'
+      }}>
       <Card>
-        <Link to={`${Staff.id}`}>
+        <Link to={`${Staff.id}`} style={{textDecoration:'none'}}>
           <CardImg src={Staff.image} alt={Staff.image} />
-          <CardTitle style={{ textAlign: "center" }}>{Staff.name}</CardTitle>
-          <Button color='danger'>Delete</Button>
+          <CardTitle style={{ textAlign: "center", color:'black', fontSize:'1.1em' }}>{Staff.name}</CardTitle>
+          <Button color='danger' style={{width:"50%"}} >Delete</Button>
+          <Button color='primary' style={{width:"50%"}}>Update</Button>
         </Link>
       </Card>
+      </FadeTransform>
+      </div>
     );
   }
 
@@ -167,22 +161,21 @@ function StaffList(props, iStaffs) {
   };
   if (searchName === "") {
     iStaffs = props.Staffs;
-    // console.log(iStaffs);
   } else {
     iStaffs = props.Staffs.filter(
       (iStaff) => iStaff.name.match(eval("/" + searchName + "/gi")) != null
     );
   }
 
-  //Defragment
+  //Defragment handle
   const [Defragment, setDefragment] = useState("");
   const myDefragment = () => {
 
     setDefragment(document.getElementById("Defragment-select").value);
   };
-  const DepartmentContainer = props.Departments.map((departmentItem) => {
-    const Staffs = iStaffs.filter(
-      (iStaff) => iStaff.department.name === departmentItem.name
+  const DepartmentContainer = props.Departments.departments.map((departmentItem) => {
+    const Staffs = iStaffs.staffs.filter(
+      (iStaff) => iStaff.departmentId === departmentItem.id
     );
     if (Defragment === "Defragment") {
       return (
@@ -226,7 +219,6 @@ function StaffList(props, iStaffs) {
     } else {
 
       return Staffs.map((Staff) => {
-
         return (
           <div
             key={Staff.id}
@@ -245,7 +237,7 @@ const errors = validate(itemStaff.name, itemStaff.doB, itemStaff.startDate, item
       <div className="row">
         <h2 className="col-sm-2 col-md-2 col-xl-2">Nhân Viên</h2>
 
-        {/*search*/}
+        {/*search by name*/}
         <div className="col-sm-7 col-md-8 col-xl-8">
           <input
             id="SearchName"
@@ -350,11 +342,11 @@ const errors = validate(itemStaff.name, itemStaff.doB, itemStaff.startDate, item
                       name="department"
                       onChange={handleInputChange}
                     >
-                      {props.Departments.map((department) => {
+                      {props.Departments.departments.map((department) => {
                         return (
                           <option
-                            key={props.Departments.indexOf(department)}
-                            value={props.Departments.indexOf(department)}
+                            key={props.Departments.departments.indexOf(department)}
+                            value={props.Departments.departments.indexOf(department)}
                           >
                             {department.name}
                           </option>
@@ -412,7 +404,7 @@ const errors = validate(itemStaff.name, itemStaff.doB, itemStaff.startDate, item
           </Modal>
         </div>
 
-        {/*Sort*/}
+        {/*Sort by Defragment*/}
         <div className="col-sm-7 col-md-8 col-xl-8">
           <select className="form-select rounded " id="Defragment-select">
             <option value="Default">None Defragment</option>

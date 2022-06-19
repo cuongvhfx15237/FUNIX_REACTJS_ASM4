@@ -5,7 +5,7 @@ import {baseUrl} from '../shared/baseUrl';
 
 export const fetchStaffs = () => (dispatch) => {
    dispatch(staffsLoading(true))
-   return fetch(baseUrl +'staffs')
+   return fetch(baseUrl +'staffss')
    .then(
       (response) => {
          if (response.ok) {
@@ -96,7 +96,6 @@ export const departmentsFaild = (error) =>({
 
 export const fetchSalarys = () => (dispatch) => {
    dispatch(salaryLoading(true));
-   
    return fetch(baseUrl + 'StaffsSalary')
    .then(
       (response) => {
