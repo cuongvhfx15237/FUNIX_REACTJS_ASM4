@@ -31,7 +31,6 @@ function Main(props){
     props.fetchDepartments();
     props.fetchSalarys();},[]
   )
-debugger
   const addStaff = (staffAdd) =>{
     const idF = props.Staffs.map((staff)=>staff.id);
     const id = Math.max(...idF) + 1;
@@ -52,17 +51,14 @@ debugger
       const location = useLocation();
   // if (props.departments.departments.length==0){
     if(props.staffs.isLoading){
-      debugger
       return <Loading />
     }
     else if(props.staffs.isError !== null){
-      debugger
       return <h3>{props.staffs.isError}</h3>
    }    
   // return <div></div>}
   else {
 
-  debugger
       return(
         <div>
       <TransitionGroup >

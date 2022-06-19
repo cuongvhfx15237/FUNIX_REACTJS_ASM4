@@ -9,7 +9,7 @@ function formatMoney(n) {
 }
 
   function Salary(props, iStaffs){
-    debugger
+
       // getvalue search Name
     const [searchName, setSearchName] = useState('');
     const mySearch = () => {
@@ -18,11 +18,10 @@ function formatMoney(n) {
   
     }
     if (searchName === ''){
-    debugger
+
      iStaffs = props.Staffs;
     }
     else {
-      debugger
      iStaffs=props.Staffs.filter((iStaff)=> iStaff.name===searchName)}
 
       //Sort 

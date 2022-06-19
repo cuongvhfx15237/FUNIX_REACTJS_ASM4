@@ -2,10 +2,20 @@ import React from "react";
 import { Card } from "reactstrap";
 import { Breadcrumb, BreadcrumbItem } from "reactstrap";
 import { Link } from "react-router-dom";
+import {Loading} from "./LoadingComponents"
 
 
 
 function Department (props){
+  if(props.isLoading){
+    return (
+    <div className="container">
+       <div className="row">
+          <Loading />
+       </div>
+    </div>
+    )
+ }
     const Dept = props.Department.map((Dept) => {
       return (
 

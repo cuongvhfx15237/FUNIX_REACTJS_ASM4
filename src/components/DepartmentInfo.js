@@ -25,7 +25,6 @@ function DepartmentInfor(props){
        )
     })
 
-    debugger
 
     return(
        <div className="container-fluid">

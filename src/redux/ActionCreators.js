@@ -27,15 +27,97 @@ export const fetchStaffs = () => (dispatch) => {
    )
    .then(response => response.json())
    .then(staffs => {
-      dispatch(addStaffs(staffs));
+      dispatch(addStaff(staffs));
    })
    .catch(err => dispatch(fetchStaffsFailed(err.message)));
 };
 
-export const addStaffs = (staffs) => ({
+export const addStaff = (staffs) => ({
    type: ActionTypes.FETCH_STAFF_SUCCESS,
    payload: staffs 
 });
+export const postStaff = (newStaff) => (dispatch) => {
+   return fetch(baseUrl +'staffs',{
+   method: "POST",
+      body: JSON.stringify(newStaff),
+      headers: {
+         'Content-Type':'application/json'
+      },
+      credentials: 'same-origin'})
+   .then(
+      (response) => {
+         if (response.ok) {
+            return response;
+         } 
+         else {
+            var error = new Error(
+               "Error" + response.status + response.statusText
+            );
+            error.response = response;
+            throw error;
+         }
+      },
+      (error) => {
+        
+        throw error;
+      }
+   )
+   .then(response => response.json())
+   .then(response => {
+      dispatch(addStaff(newStaff));
+      dispatch(fetchSalarys())
+   })
+   .catch(error => dispatch(fetchStaffsFailed(error.message))); 
+}
+export const updateStaff = (staff) => (dispatch) => {
+   console.log(staff);
+   return fetch(baseUrl + "staffs", {
+      method: 'PATCH',
+      body: JSON.stringify(staff),
+      headers: { 'Content-Type': 'application/json'},
+      credentials: "same-origin",
+   })
+   .then(response =>{
+      console.log(response);
+      if(response.ok) {
+         return response;
+      } else {
+         var error = new Error("Update is failed");
+         error.response = response;
+         throw error;
+      }
+   }, error =>{
+      throw error;
+   })
+   .then(response => response.json())
+   .then(response => {
+      console.log(fetchStaffs)
+      dispatch(fetchStaffs());
+      dispatch(addSalarysStaffs(response));
+   })
+   .catch(error => {
+      alert( error.message)
+   });
+}
+// delete a staff
+export const deleteStaff = (IdStaff) => (dispatch) => {
+   console.log(baseUrl + `staffs/${IdStaff}`);
+
+   return fetch(baseUrl + `staffs/${IdStaff}` , {
+      method: 'DELETE',
+   })
+   .then(response => response.json())
+   .then(staffs => {
+      dispatch(deleted(staffs));
+      dispatch(addSalarysStaffs(staffs));
+   });
+};
+
+export const deleted = (afterDeleted) => ({
+   type: ActionTypes.DELETE_STAFF_SUCCESS,
+   payload: afterDeleted,
+})
+
 
 export const staffsLoading = () => ({
    type: ActionTypes.STAFFS_LOADING,
