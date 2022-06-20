@@ -50,56 +50,33 @@ function StaffList(props, iStaffs) {
   {/* control database of Name - DdoB - startDate and validate value*/}
   const handleBlur = (field) =>  (e) => {
     e.preventDefault();
-    setItemStaff({
+    const ItemValidate={
         ...itemStaff,
         touched: { ...itemStaff.touched, [field]: true}
-    })
+    }
   };
 
   {/* function to control data when changed
 - Params name: name of object of staff info
 - value value of name object
 - use onAdd to pass value newStaff info from children component to Main component*/}
-  function handleInputChange(event) {
-    event.preventDefault();
-    const target = event.target;
-    const name = target.name;
-    let value ;
-    if (name==="annualLeave"||name==="overTime" || name==="salaryScale"){
-      value = parseInt(target.value)
-      console.log(value)
-    }
-    else if(name === "doB"|| name==="startDate"){
-      value = (new Date(target.value)).toISOString();
-      console.log(value)
-    }
-    else if (name === "department"){
-      value = props.Departments[target.value]
-      console.log(value)
-    }
-    else {
-       value=target.value
-       console.log(value)
-    };
-    setItemStaff({...itemStaff,
-      [name]: value,
-    });
-  }
+
 
   //handle submit add staff info
   const handleSubmit = (event) =>{
     event.preventDefault();
-    const newStaff = {
-      name: itemStaff.name,
-      doB: itemStaff.doB,
-      startDate: itemStaff.startDate,
-      department: itemStaff.department,
-      salaryScale: itemStaff.salaryScale,
-      annualLeave: itemStaff.annualLeave,
-      overTime: itemStaff.overTime,
-      image: "/assets/images/alberto.png",
-    };
-      props.onAdd(newStaff)
+    setItemStaff({...itemStaff,
+      name: document.querySelector('#name').value,
+      doB: new Date(document.querySelector('#doB').value).toISOString(),
+      startDate: new Date(document.querySelector('#startDate').value).toISOString(),
+      department: props.Departments[document.querySelector('#department').value],
+      salaryScale: parseInt(document.querySelector('#salaryScale').value),
+      annualLeave: parseInt(document.querySelector('#annualLeave').value),
+      overTime: parseInt(document.querySelector('#overTime').value),
+  })
+  debugger
+  console.log(itemStaff)
+      props.onAdd(itemStaff)
   }
   
 //validate input context
@@ -286,11 +263,11 @@ const errors = validate(itemStaff.name, itemStaff.doB, itemStaff.startDate, item
                       id="name"
                       name="name"
                       placeholder="Họ và tên"
-                      value={itemStaff.name}
+                      // value={itemStaff.name}
                       valid={errors.name === ""}
                       invalid={errors.name !== ""}
                       onBlur={handleBlur("name")}
-                      onChange={handleInputChange}
+                      // onChange={handleInputChange}
                     />
                     <FormFeedback>{errors.name}</FormFeedback>
                   </FormGroup>
@@ -306,7 +283,7 @@ const errors = validate(itemStaff.name, itemStaff.doB, itemStaff.startDate, item
                       valid={errors.doB === ""}
                       invalid={errors.doB !== ""}
                       onBlur={handleBlur("doB")}
-                      onChange={handleInputChange}
+                      // onChange={handleInputChange}
                     />
                     <FormFeedback>{errors.doB}</FormFeedback>
                   </FormGroup>
@@ -325,7 +302,7 @@ const errors = validate(itemStaff.name, itemStaff.doB, itemStaff.startDate, item
                       valid={errors.startDate === ""}
                       invalid={errors.startDate !== ""}
                       onBlur={handleBlur("startDate")}
-                      onChange={handleInputChange}
+                      // onChange={handleInputChange}
                     />
                     <FormFeedback>{errors.startDate}</FormFeedback>
                   </FormGroup>
@@ -337,10 +314,11 @@ const errors = validate(itemStaff.name, itemStaff.doB, itemStaff.startDate, item
                       Phòng ban
                     </Label>
                     <Input
+                      id="department"
                       className="col-sm-12 col-md-8 col-xl-9"
                       type="select"
                       name="department"
-                      onChange={handleInputChange}
+                      // onChange={handleInputChange}
                     >
                       {props.Departments.departments.map((department) => {
                         return (
@@ -362,11 +340,12 @@ const errors = validate(itemStaff.name, itemStaff.doB, itemStaff.startDate, item
                       Hệ số lương
                     </Label>
                     <Input
+                      id="salaryScale"
                       className="col-sm-12 col-md-8 col-xl-9"
                       type="number"
                       defaultValue={1}
                       name="salaryScale"
-                      onChange={handleInputChange}
+                      // onChange={handleInputChange}
                     />
                   </FormGroup>
                   <FormGroup className="row" id="form-group">
@@ -374,11 +353,12 @@ const errors = validate(itemStaff.name, itemStaff.doB, itemStaff.startDate, item
                       Số ngày nghỉ còn lại
                     </Label>
                     <Input
+                      id="annualLeave"
                       className="col-sm-12 col-md-8 col-xl-9"
                       type="number"
                       defaultValue={0}
                       name="annualLeave"
-                      onChange={handleInputChange}
+                      // onChange={handleInputChange}
                     />
                   </FormGroup>
                   <FormGroup className="row" id="form-group">
@@ -386,11 +366,12 @@ const errors = validate(itemStaff.name, itemStaff.doB, itemStaff.startDate, item
                       Số ngày làm thêm
                     </Label>
                     <Input
+                      id="overTime"
                       className="col-sm-12 col-md-8 col-xl-9"
                       type="number"
                       defaultValue={0}
                       name="overTime"
-                      onChange={handleInputChange}
+                      // onChange={handleInputChange}
                     />
                   </FormGroup>
                 </ModalBody>

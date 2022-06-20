@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import { CardImg, CardText, CardBody, Breadcrumb, BreadcrumbItem, Button, Modal, ModalHeader, ModalBody, Row, Label, Col } from "reactstrap";
-import { Control, LocalForm, Errors } from "react-hook-form";
+import { Control, LocalForm, Errors } from "react-redux-form";
 import dateFormat from "dateformat";
 import '../index.css'
 import { Link } from "react-router-dom";
