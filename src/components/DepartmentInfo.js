@@ -1,13 +1,13 @@
 import React from 'react';
-import { Card , CardImg , CardTitle, Button, Breadcrumb, BreadcrumbItem} from 'reactstrap';
+import { Card , CardImg , CardTitle, Button, Breadcrumb, BreadcrumbItem, Row} from 'reactstrap';
 import { Link, useParams} from 'react-router-dom';
+
 
 function DepartmentInfor(props){
     const departmentName = useParams();
 
    //  const depts = props.departments.departments.filter((dept)=> dept.name === 'Sale')
     const depts = props.departments.departments.filter((dept)=> dept.name === departmentName.departmentName)
-    debugger
     const staffOfDepart = props.staffs.staffs.filter((staff) =>
       staff.departmentId === depts[0].id)
     .map((staff) =>{
@@ -17,9 +17,14 @@ function DepartmentInfor(props){
                 <Link to={`/nhanvien/${staff.id}`} style={{textDecoration:'none'}}>
                   <CardImg src={staff.image} alt={staff.name} className='col-sm-12 col-md-4 col-xl-3'/>
                   <CardTitle style={{ textAlign: "center", color:'black', fontSize:'1.1em' }}>{staff.name}</CardTitle>
-                  <Button color='danger' style={{width:"50%"}} >Delete</Button>
-                  <Button color='primary' style={{width:"50%"}}>Update</Button>
+
                 </Link>
+                <Row>
+                     <Button color='primary' style={{width:"50%"}}>Update
+                     <Link to={`/nhanvien/${staff.id}`} style={{textDecoration:'none'}}/></Button>
+                  <Button color='danger' style={{width:"50%"}} >Delete</Button>
+
+                  </Row>
              </Card>
           </div>
        )

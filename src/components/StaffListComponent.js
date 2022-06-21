@@ -3,15 +3,13 @@ import {
   Card,
   CardImg,
   CardTitle,
-  Form,
-  FormGroup,
   Label,
-  Input,
   ModalHeader,
   ModalBody,
   ModalFooter,
-  FormFeedback,
+  Row
 } from "reactstrap";
+import {LocalForm, Control, Errors} from 'react-redux-form';
 import "../index.css";
 import { Link } from "react-router-dom";
 import { Button, Modal } from "reactstrap";
@@ -20,26 +18,12 @@ import { FadeTransform } from 'react-animation-components';
 
 
 function StaffList(props, iStaffs) {
+  const required = (val) => (val && val.length > 0);
+  const maxLength = (len) => (val) => !(val) || (val.length <= len);
+  const minLength = (len) => (val) => (val && (val.length >= len)) || !(val)
+  var dateReg = (val) => (val && val.length > 0);
   const [modalAdd, setModalAdd] = useState(false)
-  const [itemStaff, setItemStaff] = useState({
-    name:"",
-    doB: "",
-    startDate:"",
-    department:"Sale",
-    salaryScale:1,
-    annualLeave:0,
-    overTime:0,
-    imate:"/assets/images/alberto.png",
-    touched: {
-      name: false,
-      doB: false,
-      startDate: false,
-      salaryScale: false,
-      department: false,
-      annualLeave: false,
-      overTime: false,
-    }
-  })
+
   {/* function to control Modal add Staff
 - Params AddModal : false to close*/}
   function toggleModal(){
@@ -47,86 +31,47 @@ function StaffList(props, iStaffs) {
     !modalAdd,
     )
   }
-  {/* control database of Name - DdoB - startDate and validate value*/}
-  const handleBlur = (field) =>  (e) => {
-    e.preventDefault();
-    const ItemValidate={
-        ...itemStaff,
-        touched: { ...itemStaff.touched, [field]: true}
-    }
-  };
 
   {/* function to control data when changed
 - Params name: name of object of staff info
 - value value of name object
 - use onAdd to pass value newStaff info from children component to Main component*/}
+  const handleSubmit = (value) =>{
+    //  event.preventDefault();
+    const doBValue=(new Date(value.doB)).toISOString();
+    const startDateValue = (new Date(value.startDate)).toISOString();
+    const DepartmentValue = props.Departments[document.querySelector("#department").value];
+    const salaryScaleValue = parseInt(value.salaryScale)
+    const annualLeaveValue = parseInt(value.annualLeave)
+    const overTimeValue = parseInt(value.overTime)
 
-
-  //handle submit add staff info
-  const handleSubmit = (event) =>{
-    event.preventDefault();
-    setItemStaff({...itemStaff,
-      name: document.querySelector('#name').value,
-      doB: new Date(document.querySelector('#doB').value).toISOString(),
-      startDate: new Date(document.querySelector('#startDate').value).toISOString(),
-      department: props.Departments[document.querySelector('#department').value],
-      salaryScale: parseInt(document.querySelector('#salaryScale').value),
-      annualLeave: parseInt(document.querySelector('#annualLeave').value),
-      overTime: parseInt(document.querySelector('#overTime').value),
-  })
-  debugger
-  console.log(itemStaff)
-      props.onAdd(itemStaff)
+    const newStaff = {
+      name: value.name,
+      doB: doBValue,
+      startDate: startDateValue,
+      department: DepartmentValue,
+      salaryScale: salaryScaleValue,
+      annualLeave: annualLeaveValue,
+      overTime: overTimeValue,
+      image: "/assets/images/alberto.png",
+    };
+     props.onAdd(newStaff)
   }
   
-//validate input context
- function validate(){
-    const errors = {
-      name:"",
-      department:"",
-      doB:"",
-      startDate:"",
-      salaryScale:"",
-      annualLeave:"",
-      overTime:"",
-    };
-
-    if (itemStaff.touched.name && itemStaff.name.length < 3){
-      errors.name = "Tên phải có hơn 3 ký tự"
-    }
-    else if (itemStaff.touched.name && itemStaff.name.length > 50){
-      errors.name = "Tên phải có it hơn 50 ký tự"
-    }
-    if (itemStaff.touched.doB && itemStaff.doB===""){
-      errors.doB = "Yêu cầu nhập thông tin ngày tháng"
-    }
-    if (itemStaff.touched.startDate && itemStaff.startDate===""){
-      errors.startDate = "Yêu cầu nhập thông tin ngày tháng"
-    }
-    return errors;
- }
-
-   
 
   function RenderStaffList({ Staff }) {
     //render  list staff with image and name;
     return (
-      <div key={Staff.id}>
-      <FadeTransform
-         in
-         transformProps={{
-            exitTransform: 'scale(0.5) translateY(-50%)'
-      }}>
       <Card>
-        <Link to={`${Staff.id}`} style={{textDecoration:'none'}}>
+        <Link to={`${Staff.id}`}>
           <CardImg src={Staff.image} alt={Staff.image} />
-          <CardTitle style={{ textAlign: "center", color:'black', fontSize:'1.1em' }}>{Staff.name}</CardTitle>
-          <Button color='danger' style={{width:"50%"}} >Delete</Button>
-          <Button color='primary' style={{width:"50%"}}>Update</Button>
+          <CardTitle style={{ textAlign: "center" }}>{Staff.name}</CardTitle>
         </Link>
+        <Row>
+        <Button color='primary' style={{display: 'inline-block', width:"50%"}}>Update</Button>
+        <Button color='danger' style={{display: 'inline-block', width:"50%"}} onDeleteStaff={props.deleteStaff}>Delete</Button>
+        </Row>
       </Card>
-      </FadeTransform>
-      </div>
     );
   }
 
@@ -144,13 +89,14 @@ function StaffList(props, iStaffs) {
     );
   }
 
-  //Defragment handle
+  //Defragment
   const [Defragment, setDefragment] = useState("");
   const myDefragment = () => {
 
     setDefragment(document.getElementById("Defragment-select").value);
   };
   const DepartmentContainer = props.Departments.departments.map((departmentItem) => {
+
     const Staffs = iStaffs.staffs.filter(
       (iStaff) => iStaff.departmentId === departmentItem.id
     );
@@ -196,6 +142,7 @@ function StaffList(props, iStaffs) {
     } else {
 
       return Staffs.map((Staff) => {
+
         return (
           <div
             key={Staff.id}
@@ -208,13 +155,12 @@ function StaffList(props, iStaffs) {
       });
     }
   });
-const errors = validate(itemStaff.name, itemStaff.doB, itemStaff.startDate, itemStaff.department, itemStaff.salaryScale, itemStaff.annualLeave, itemStaff.overTime);
   return (
     <div className="container-fluid">
       <div className="row">
         <h2 className="col-sm-2 col-md-2 col-xl-2">Nhân Viên</h2>
 
-        {/*search by name*/}
+        {/*search*/}
         <div className="col-sm-7 col-md-8 col-xl-8">
           <input
             id="SearchName"
@@ -250,75 +196,99 @@ const errors = validate(itemStaff.name, itemStaff.doB, itemStaff.startDate, item
             isOpen={modalAdd}
           >
             <div>
-              <Form className="form-container" id="form-container" onSubmit={(value)=> handleSubmit(value)}>
+              <LocalForm className="form-container" id="form-container" onSubmit={(value)=> handleSubmit(value)}>
                 <ModalHeader>Thông tin nhân viên</ModalHeader>
                 <ModalBody>
-                  <FormGroup className="row" id="form-group">
-                    <Label className="col-sm-12 col-md-4 col-xl-3" for="name">
+                  <Row className="row" id="form-group">
+                    <Label className="col-sm-12 col-md-4 col-xl-3" htmlFor="name">
                       Họ Và Tên
                     </Label>
-                    <Input
+                    <Control.input
+                      model=".name"
                       className="col-sm-12 col-md-8 col-xl-9"
-                      type="text"
                       id="name"
                       name="name"
                       placeholder="Họ và tên"
-                      // value={itemStaff.name}
-                      valid={errors.name === ""}
-                      invalid={errors.name !== ""}
-                      onBlur={handleBlur("name")}
-                      // onChange={handleInputChange}
+                      validators={{
+                        required: required, 
+                        minLength: minLength(3),
+                        maxLength: maxLength(30)
+                     }}
                     />
-                    <FormFeedback>{errors.name}</FormFeedback>
-                  </FormGroup>
-                  <FormGroup className="row" id="form-group">
-                    <Label className="col-sm-12 col-md-4 col-xl-3" for="doB">
+                    <span className="col-sm-12 col-md-4 col-xl-3"></span>
+                    <Errors
+                    model=".name"
+                    className = "text-danger col-sm-12 col-md-8 col-xl-9"
+                    show="touched"
+                    messages={{
+                      required:"Yêu cầu nhập thông tin",
+                      minLength: "Tên phải nhiều hơn 3 ký tự",
+                      maxLength:" Tên phải ít hơn  ký tự",
+                    }}></Errors>
+
+                  </Row>
+                  <Row className="row" id="form-group">
+                    <Label className="col-sm-12 col-md-4 col-xl-3" htmlFor="doB">
                       Ngày Sinh
                     </Label>
-                    <Input
+                    <Control.input
+                      model=".doB"
                       className="col-sm-12 col-md-8 col-xl-9"
                       type="date"
                       id="doB"
                       name="doB"
-                      valid={errors.doB === ""}
-                      invalid={errors.doB !== ""}
-                      onBlur={handleBlur("doB")}
-                      // onChange={handleInputChange}
+                      validators={{
+                        dateReg,
+                     }}
                     />
-                    <FormFeedback>{errors.doB}</FormFeedback>
-                  </FormGroup>
-                  <FormGroup className="row" id="form-group">
+                    <span className="col-sm-12 col-md-4 col-xl-3"></span>
+                    <Errors
+                    model=".doB"
+                    className = "text-danger col-sm-12 col-md-8 col-xl-9"
+                    show="touched"
+                    messages={{
+                      dateReg: "Vui long nhap ngay thang"
+                    }}></Errors>
+                  </Row>
+                  <Row className="row" id="form-group">
                     <Label
                       className="col-sm-12 col-md-4 col-xl-3"
-                      for="startDate"
+                      htmlFor="startDate"
                     >
                       Ngày vào công ty
                     </Label>
-                    <Input
+                    <Control.input
+                      model=".startDate"
                       className="col-sm-12 col-md-8 col-xl-9"
                       type="date"
                       id="startDate"
                       name="startDate"
-                      valid={errors.startDate === ""}
-                      invalid={errors.startDate !== ""}
-                      onBlur={handleBlur("startDate")}
-                      // onChange={handleInputChange}
+                      validators={{
+                        dateReg,
+                     }}
                     />
-                    <FormFeedback>{errors.startDate}</FormFeedback>
-                  </FormGroup>
-                  <FormGroup className="row" id="form-group">
+                    <span className="col-sm-12 col-md-4 col-xl-3"></span>
+                    <Errors
+                    model=".startDate"
+                    className = "text-danger col-sm-12 col-md-8 col-xl-9"
+                    show="touched"
+                    messages={{
+                      dateReg: 'Vui long nhap ngay thang'
+                    }}></Errors>
+                  </Row>
+                  <Row className="row" id="form-group">
                     <Label
                       className="col-sm-12 col-md-4 col-xl-3"
-                      for="department"
+                      htmlFor="department"
                     >
                       Phòng ban
                     </Label>
-                    <Input
+                    <Control.select
+                      model=".department"
                       id="department"
                       className="col-sm-12 col-md-8 col-xl-9"
                       type="select"
                       name="department"
-                      // onChange={handleInputChange}
                     >
                       {props.Departments.departments.map((department) => {
                         return (
@@ -329,63 +299,61 @@ const errors = validate(itemStaff.name, itemStaff.doB, itemStaff.startDate, item
                             {department.name}
                           </option>
                         );
-                      })}
-                    </Input>
-                  </FormGroup>
-                  <FormGroup className="row" id="form-group">
+                      })} 
+
+                    </Control.select>
+                  </Row>
+                  <Row className="row" id="form-group">
                     <Label
                       className="col-sm-12 col-md-4 col-xl-3"
-                      for="salaryScale"
+                      htmlFor="salaryScale"
                     >
                       Hệ số lương
                     </Label>
-                    <Input
-                      id="salaryScale"
+                    <Control.input
+                      model=".salaryScale"
                       className="col-sm-12 col-md-8 col-xl-9"
                       type="number"
                       defaultValue={1}
                       name="salaryScale"
-                      // onChange={handleInputChange}
                     />
-                  </FormGroup>
-                  <FormGroup className="row" id="form-group">
-                    <Label className="col-sm-12 col-md-4 col-xl-3">
+                  </Row>
+                  <Row className="row" id="form-group">
+                    <Label className="col-sm-12 col-md-4 col-xl-3" htmlFor="annualLeave">
                       Số ngày nghỉ còn lại
                     </Label>
-                    <Input
-                      id="annualLeave"
+                    <Control.input
+                      model = ".annualLeave"
                       className="col-sm-12 col-md-8 col-xl-9"
                       type="number"
                       defaultValue={0}
                       name="annualLeave"
-                      // onChange={handleInputChange}
                     />
-                  </FormGroup>
-                  <FormGroup className="row" id="form-group">
-                    <Label className="col-sm-12 col-md-4 col-xl-3">
+                  </Row>
+                  <Row className="row" id="form-group">
+                    <Label className="col-sm-12 col-md-4 col-xl-3" htmlFor="overTime">
                       Số ngày làm thêm
                     </Label>
-                    <Input
-                      id="overTime"
+                    <Control.input
+                    model=".overTime"
                       className="col-sm-12 col-md-8 col-xl-9"
                       type="number"
                       defaultValue={0}
                       name="overTime"
-                      // onChange={handleInputChange}
                     />
-                  </FormGroup>
+                  </Row>
                 </ModalBody>
                 <ModalFooter>
                   <Button type="submit" color="primary" onClick={toggleModal}>
                     Thêm
                   </Button>
                 </ModalFooter>
-              </Form>
+              </LocalForm>
             </div>
           </Modal>
         </div>
 
-        {/*Sort by Defragment*/}
+        {/*Sort*/}
         <div className="col-sm-7 col-md-8 col-xl-8">
           <select className="form-select rounded " id="Defragment-select">
             <option value="Default">None Defragment</option>

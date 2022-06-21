@@ -32,6 +32,7 @@ const mapDispatchToProps = (dispatch) =>({
 )
 
 function Main(props){
+
   useEffect(()=>{
     props.fetchStaffs();
     props.fetchDepartments();
@@ -48,23 +49,25 @@ function Main(props){
       const location = useLocation();
   // if (props.departments.departments.length==0){
     if(props.staffs.isLoading){
+
       return <Loading />
     }
-    else if(props.staffs.isError !== null){
-      return <h3>{props.staffs.isError}</h3>
+    else if(props.staffs.errMess !== null){
+
+      return <h3>{props.staffs.errMess}</h3>
    }    
   // return <div></div>}
   else {
-
+debugger
       return(
         <div>
       <TransitionGroup >
         <CSSTransition key={location.key} classNames="page" timeout={300}>
           <Routes>
                 <Route path='NhanVien' element={<StaffList Staffs={props.staffs} Departments={props.departments} onAdd={props.addStaff} onDeleteStaff={props.deleteStaff}/>}/>
-                <Route path='NhanVien/:id' element={<StaffWithId />}/>
+                <Route path='NhanVien/:id' element={<StaffWithId onDeleteStaff={props.deleteStaff}/>}/>
                 <Route path='PhongBan' element={<Department Department={props.departments.departments} />}/>
-                <Route path='PhongBan/:departmentName' element={<DepartmentInfor departments={props.departments} staffs={props.staffs}/>}/>
+                <Route path='PhongBan/:departmentName' element={<DepartmentInfor departments={props.departments} staffs={props.staffs} />}/>
                 <Route path='BangLuong' element={<Salary Staffs={props.staffs} />}/>
                 <Route path='*' element={<Navigate to="/Nhanvien" />}/>
           </Routes>
