@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import { Button, Modal } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FadeTransform } from 'react-animation-components';
+import * as BUTTON from "./ButtonComponent"
 
 
 function StaffList(props, iStaffs) {
@@ -67,9 +68,11 @@ function StaffList(props, iStaffs) {
           <CardImg src={Staff.image} alt={Staff.image} />
           <CardTitle style={{ textAlign: "center" }}>{Staff.name}</CardTitle>
         </Link>
+        {/* <Button color='primary' style={{display: 'inline-block', width:"50%"}}>Update</Button>
+        <Button color='danger' style={{display: 'inline-block', width:"50%"}} onDeleteStaff={props.deleteStaff}>Delete</Button> */}
         <Row>
-        <Button color='primary' style={{display: 'inline-block', width:"50%"}}>Update</Button>
-        <Button color='danger' style={{display: 'inline-block', width:"50%"}} onDeleteStaff={props.deleteStaff}>Delete</Button>
+        <BUTTON.delButton />
+        <BUTTON.updateButton Staff={Staff}/>
         </Row>
       </Card>
     );

@@ -6,7 +6,7 @@ import { Routes, Route, Navigate, useParams, useLocation } from 'react-router-do
 import Salary from './SalaryComponent';
 import RenderStaff from './Staff';
 import { Loading } from "./LoadingComponents";
-import { fetchStaffs , fetchDepartments , fetchSalarys, addStaff, deleteStaff, updateStaff } from '../redux/ActionCreators';
+import { fetchStaffs , fetchDepartments , fetchSalarys, addStaff, deleteStaff, updateStaff, postStaff } from '../redux/ActionCreators';
 import DepartmentInfor from './DepartmentInfo';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
@@ -20,7 +20,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) =>({
   addStaff: (staff)=>{
-    dispatch(addStaff(staff)); },
+    dispatch(postStaff(staff)); },
   fetchStaffs: () => {dispatch(fetchStaffs())},
   fetchDepartments : () => {dispatch(fetchDepartments())},
   fetchSalarys: () => {dispatch(fetchSalarys())},

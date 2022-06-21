@@ -36,6 +36,7 @@ export const addStaff = (staffs) => ({
    type: ActionTypes.FETCH_STAFF_SUCCESS,
    payload: staffs 
 });
+
 export const postStaff = (newStaff) => (dispatch) => {
    return fetch(baseUrl +'staffs',{
    method: "POST",
@@ -51,14 +52,13 @@ export const postStaff = (newStaff) => (dispatch) => {
          } 
          else {
             var error = new Error(
-               "Error" + response.status + response.statusText
+               "Error" + response.status + ": " + response.statusText
             );
             error.response = response;
             throw error;
          }
       },
       (error) => {
-        
         throw error;
       }
    )
@@ -67,7 +67,10 @@ export const postStaff = (newStaff) => (dispatch) => {
       dispatch(addStaff(newStaff));
       dispatch(fetchSalarys())
    })
-   .catch(error => dispatch(fetchStaffsFailed(error.message))); 
+   .catch(error =>{
+      console.log("Post Staffs", error.message); 
+      alert ('Post staff error'. error.message)
+   })
 }
 export const updateStaff = (staff) => (dispatch) => {
    console.log(staff);
