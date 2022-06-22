@@ -74,6 +74,7 @@ export const postStaff = (newStaff) => (dispatch) => {
 }
 export const updateStaff = (staff) => (dispatch) => {
    console.log(staff);
+   debugger
    return fetch(baseUrl + "staffs", {
       method: 'PATCH',
       body: JSON.stringify(staff),

@@ -65,9 +65,7 @@ function StaffList(props, iStaffs) {
     function  delStaff(){
       props.deleteStaff(Staff.id)
     }
-    function updateStaff(props){
-     alert(props.Staff)
-  }
+
     //render  list staff with image and name;
     return (
       <Card>
@@ -76,8 +74,10 @@ function StaffList(props, iStaffs) {
           <CardTitle style={{ textAlign: "center" }}>{Staff.name}</CardTitle>
         </Link>
         <Row>
+        <Link to={`${Staff.id}`} style={{margin:'0px', width: "50%"}}>
+        <Button color='primary' style={{margin:'0px', width: "100%"}}>Update</Button>
+        </Link>
         <Button color='danger' style={{display: 'inline-flex', width:"50%", justifyContent:'center'}} onClick={delStaff}>Delete</Button>
-        <Button color='primary' style={{margin:'0px', width: "50%"}} onClick={updateStaff}>Update</Button>
         </Row>
       </Card>
     );
@@ -198,7 +198,7 @@ function StaffList(props, iStaffs) {
           <Button color="primary" onClick={toggleModal}>
             ADD
           </Button>
-
+          {/*add Staff Modal*/}
           <Modal
             style={{ width: "900px", maxWidth: "100%" }}
             isOpen={modalAdd}

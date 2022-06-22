@@ -40,13 +40,16 @@ function Main(props){
     props.fetchSalarys();},[]
   )
       const StaffWithId=()=>{
-        const id=useParams();
+        const id=useParams()
         return(
           <RenderStaff 
           Staff={props.staffs.staffs.filter((Staff)=>Staff.id === parseInt (id.id, 10))}
+          Departments={props.departments}
+          updateStaff={props.updateStaff}
           />
         )
       }
+      debugger
       const location = useLocation();
   // if (props.departments.departments.length==0){
     if(props.staffs.isLoading){
@@ -65,8 +68,7 @@ function Main(props){
         <CSSTransition key={location.key} classNames="page" timeout={300}>
           <Routes>
                 <Route path='NhanVien' element={<StaffList Staffs={props.staffs} Departments={props.departments} postStaff={props.postStaff} deleteStaff={props.deleteStaff}/>}/>
-                <Route path='NhanVien/:id' element={<StaffWithId onDeleteStaff={props.deleteStaff}/>}/>
-                {/* <Route path='NhanVien/:id' element={<UpdateForm />}/> */}
+                <Route path='NhanVien/:id' element={<StaffWithId updateStaff={props.updateStaff}/>}/>
                 <Route path='PhongBan' element={<Department Department={props.departments.departments} />}/>
                 <Route path='PhongBan/:departmentName' element={<DepartmentInfor departments={props.departments} staffs={props.staffs} />}/>
                 <Route path='BangLuong' element={<Salary Staffs={props.staffs} />}/>
