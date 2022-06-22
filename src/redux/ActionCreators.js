@@ -64,7 +64,7 @@ export const postStaff = (newStaff) => (dispatch) => {
    )
    .then(response => response.json())
    .then(response => {
-      dispatch(addStaff(newStaff));
+      dispatch(addStaff(response));
       dispatch(fetchSalarys())
    })
    .catch(error =>{
@@ -168,7 +168,7 @@ export const addDepartments = (departments) =>({
    payload: departments
 });
 
-export const departmentsLoading = (error) =>({
+export const departmentsLoading = () =>({
    type: ActionTypes.DEPARTMENT_LOADING,
 });
 

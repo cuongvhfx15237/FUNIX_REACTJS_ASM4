@@ -56,3 +56,7 @@ ul {
   transform: translateX(100%);
   transition: all 300ms ease-out;
 }
+.modal-title {
+  display: inherit;
+  width: 100%;
+}

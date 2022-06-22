@@ -15,7 +15,6 @@ import { Link } from "react-router-dom";
 import { Button, Modal } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FadeTransform } from 'react-animation-components';
-import * as BUTTON from "./ButtonComponent"
 
 
 function StaffList(props, iStaffs) {
@@ -41,7 +40,7 @@ function StaffList(props, iStaffs) {
     //  event.preventDefault();
     const doBValue=(new Date(value.doB)).toISOString();
     const startDateValue = (new Date(value.startDate)).toISOString();
-    const DepartmentValue = props.Departments[document.querySelector("#department").value];
+    const DepartmentValue =document.querySelector("#department").value;
     const salaryScaleValue = parseInt(value.salaryScale)
     const annualLeaveValue = parseInt(value.annualLeave)
     const overTimeValue = parseInt(value.overTime)
@@ -50,17 +49,25 @@ function StaffList(props, iStaffs) {
       name: value.name,
       doB: doBValue,
       startDate: startDateValue,
-      department: DepartmentValue,
+      departmentId: DepartmentValue,
       salaryScale: salaryScaleValue,
       annualLeave: annualLeaveValue,
       overTime: overTimeValue,
       image: "/assets/images/alberto.png",
     };
-     props.onAdd(newStaff)
+     props.postStaff(newStaff)
+     console.log(newStaff)
   }
   
 
   function RenderStaffList({ Staff }) {
+
+    function  delStaff(){
+      props.deleteStaff(Staff.id)
+    }
+    function updateStaff(props){
+     alert(props.Staff)
+  }
     //render  list staff with image and name;
     return (
       <Card>
@@ -68,11 +75,9 @@ function StaffList(props, iStaffs) {
           <CardImg src={Staff.image} alt={Staff.image} />
           <CardTitle style={{ textAlign: "center" }}>{Staff.name}</CardTitle>
         </Link>
-        {/* <Button color='primary' style={{display: 'inline-block', width:"50%"}}>Update</Button>
-        <Button color='danger' style={{display: 'inline-block', width:"50%"}} onDeleteStaff={props.deleteStaff}>Delete</Button> */}
         <Row>
-        <BUTTON.delButton />
-        <BUTTON.updateButton Staff={Staff}/>
+        <Button color='danger' style={{display: 'inline-flex', width:"50%", justifyContent:'center'}} onClick={delStaff}>Delete</Button>
+        <Button color='primary' style={{margin:'0px', width: "50%"}} onClick={updateStaff}>Update</Button>
         </Row>
       </Card>
     );
@@ -98,8 +103,8 @@ function StaffList(props, iStaffs) {
 
     setDefragment(document.getElementById("Defragment-select").value);
   };
+  
   const DepartmentContainer = props.Departments.departments.map((departmentItem) => {
-
     const Staffs = iStaffs.staffs.filter(
       (iStaff) => iStaff.departmentId === departmentItem.id
     );
@@ -200,7 +205,11 @@ function StaffList(props, iStaffs) {
           >
             <div>
               <LocalForm className="form-container" id="form-container" onSubmit={(value)=> handleSubmit(value)}>
-                <ModalHeader>Thông tin nhân viên</ModalHeader>
+                <ModalHeader style={{width: '100%', display: 'inline-flex'}}>
+                        Thông tin nhân viên
+                        <button onClick={toggleModal} type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style={{display:'inherit'}}></button>
+
+                </ModalHeader>
                 <ModalBody>
                   <Row className="row" id="form-group">
                     <Label className="col-sm-12 col-md-4 col-xl-3" htmlFor="name">
@@ -297,7 +306,7 @@ function StaffList(props, iStaffs) {
                         return (
                           <option
                             key={props.Departments.departments.indexOf(department)}
-                            value={props.Departments.departments.indexOf(department)}
+                            value={department.id}
                           >
                             {department.name}
                           </option>

@@ -6,9 +6,10 @@ import { Routes, Route, Navigate, useParams, useLocation } from 'react-router-do
 import Salary from './SalaryComponent';
 import RenderStaff from './Staff';
 import { Loading } from "./LoadingComponents";
-import { fetchStaffs , fetchDepartments , fetchSalarys, addStaff, deleteStaff, updateStaff, postStaff } from '../redux/ActionCreators';
+import { fetchStaffs , fetchDepartments , fetchSalarys, deleteStaff, updateStaff, postStaff } from '../redux/ActionCreators';
 import DepartmentInfor from './DepartmentInfo';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import UpdateForm from './FormUpdate';
 
 const mapStateToProps = (state) => {
   return{ 
@@ -19,8 +20,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) =>({
-  addStaff: (staff)=>{
-    dispatch(postStaff(staff)); },
+  postStaff: (newStaff)=>{
+    dispatch(postStaff(newStaff)); },
   fetchStaffs: () => {dispatch(fetchStaffs())},
   fetchDepartments : () => {dispatch(fetchDepartments())},
   fetchSalarys: () => {dispatch(fetchSalarys())},
@@ -58,14 +59,14 @@ function Main(props){
    }    
   // return <div></div>}
   else {
-debugger
       return(
         <div>
       <TransitionGroup >
         <CSSTransition key={location.key} classNames="page" timeout={300}>
           <Routes>
-                <Route path='NhanVien' element={<StaffList Staffs={props.staffs} Departments={props.departments} onAdd={props.addStaff} onDeleteStaff={props.deleteStaff}/>}/>
+                <Route path='NhanVien' element={<StaffList Staffs={props.staffs} Departments={props.departments} postStaff={props.postStaff} deleteStaff={props.deleteStaff}/>}/>
                 <Route path='NhanVien/:id' element={<StaffWithId onDeleteStaff={props.deleteStaff}/>}/>
+                {/* <Route path='NhanVien/:id' element={<UpdateForm />}/> */}
                 <Route path='PhongBan' element={<Department Department={props.departments.departments} />}/>
                 <Route path='PhongBan/:departmentName' element={<DepartmentInfor departments={props.departments} staffs={props.staffs} />}/>
                 <Route path='BangLuong' element={<Salary Staffs={props.staffs} />}/>
