@@ -90,11 +90,13 @@ function StaffList(props, iStaffs) {
     setSearchName(document.getElementById("SearchName").value);
   };
   if (searchName === "") {
-    iStaffs = props.Staffs;
+    iStaffs = props.Staffs.staffs;
   } else {
-    iStaffs = props.Staffs.filter(
+    debugger
+    iStaffs = props.Staffs.staffs.filter(
       (iStaff) => iStaff.name.match(eval("/" + searchName + "/gi")) != null
     );
+    console.log(iStaffs)
   }
 
   //Defragment
@@ -105,7 +107,7 @@ function StaffList(props, iStaffs) {
   };
   
   const DepartmentContainer = props.Departments.departments.map((departmentItem) => {
-    const Staffs = iStaffs.staffs.filter(
+    const Staffs = iStaffs.filter(
       (iStaff) => iStaff.departmentId === departmentItem.id
     );
     if (Defragment === "Defragment") {

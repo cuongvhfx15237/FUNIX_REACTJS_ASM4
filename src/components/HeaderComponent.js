@@ -11,31 +11,31 @@ function Header(){
 
         return(
             <div className="container-fluid">
-                <Navbar dark expand="md" style={{margin: 0 + 'em', backgroundColor: 'Dodgerblue'}}>
+             <Navbar dark expand="md" style={{margin: 0 + 'em', backgroundColor: 'Dodgerblue'}}>
                         <NavbarToggler onClick={toggleNav} />
                         <NavbarBrand className="mr-auto" href="/">
-                            <img src='assets/images/logo.png' height="50px" width="50px" alt='LogoIcon' />
+                        <i class="fa fa-heartbeat" aria-hidden="true" style={{fontSize:"2em", color:"red"}}></i>
                             </NavbarBrand>
                         <Collapse isOpen={isNavOpen} navbar>
                             <Nav navbar>
                             <NavItem>
                                 <NavLink className="nav-link"  to='/Nhanvien'>
-                                    <img src="assets/images/public.png" alt="NVIcon" height="20px" width="20px"/>
-                                    <span className="fa fa-home fa-lg" style={{fontSize:'20px'}}>Nhân viên</span>
+                                <i class="fa fa-id-card-o" aria-hidden="true" style={{fontSize:"1.2em"}}></i>
+                                    <span style={{fontSize:'15px'}}>  Nhân viên</span>
                                     
                                 </NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink className="nav-link" to='/PhongBan'>
-                                <img src="assets/images/Department.png" alt="PBIcon" height="20px" width="20px"/>
-                                    <span className="fa fa-info fa-lg" style={{fontSize:'20px'}}>Phòng Ban</span> 
+                                <i class="fa fa-user-circle-o" aria-hidden="true" style={{fontSize:"1.2em"}}></i>
+                                    <span style={{fontSize:'15px'}}>  Phòng Ban</span> 
                                     
                                 </NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink className="nav-link"  to='/BangLuong'>
-                                <img src="assets/images/money.png" alt="LuongIcon" height="20px" width="20px"/>
-                                    <span className="fa fa-list fa-lg" style={{fontSize:'20px'}}>Bảng Lương</span> 
+                                <i class="fa fa-money" aria-hidden="true" style={{fontSize:"1.2em"}}></i>
+                                    <span style={{fontSize:'15px'}}>  Bảng Lương</span> 
                                     
                                     </NavLink>
                             </NavItem>
